@@ -2,7 +2,7 @@
 
 Decided I wanted to learn a FPL.
 
-After reading some blog posts like [this](https://www.reddit.com/r/haskell/comments/2mr7ks/im_debating_between_haskell_and_clojure_xpost/), [this](https://bitemyapp.com/blog/meditations-on-learning-haskell/), and [this](), I chose Haskell over the competition (mainly LISP and Clojure).
+After reading some blog posts like [this](https://www.reddit.com/r/haskell/comments/2mr7ks/im_debating_between_haskell_and_clojure_xpost/) and [this](https://bitemyapp.com/blog/meditations-on-learning-haskell/) I chose Haskell over the competition (mainly LISP and Clojure).
 
 To learn Haskell I worked through the Spring 2013 section of CIS 194 that can be found [here](https://www.seas.upenn.edu/~cis194/spring13/), based on recommendation from [this](https://github.com/bitemyapp/learnhaskell) github repo. For reference I checked my work against the solutions of one @/bshwb, their repo can be found [here](https://github.com/bschwb/cis194-solutions).
 
