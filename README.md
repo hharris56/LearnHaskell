@@ -16,10 +16,10 @@ my work against the solutions of one @/bshwb, their repo can be found
 I also used [this](https://www.youtube.com/playlist?list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV) 
 youtube series on learning Haskell coming from an imperitive programming background.
 
-Other useful resources include \n
-[Real World Haskell](http://book.realworldhaskell.org/read/) \n
-[Learn you a Haskell](http://learnyouahaskell.com/) \n
-*Check the resources tab of the CIS 194 page*
+Other useful resources include
+- [Real World Haskell](http://book.realworldhaskell.org/read/)
+- [Learn you a Haskell](http://learnyouahaskell.com/)
+- *Check the resources tab of the CIS 194 page*
 
 
 Hunter Harris - August 2021
