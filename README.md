@@ -7,10 +7,8 @@ After reading some blog posts like
 and [this](https://bitemyapp.com/blog/meditations-on-learning-haskell/) 
 I chose Haskell over the competition (mainly LISP and Clojure).
 
-To learn Haskell I worked through the Spring 2013 section of CIS 194 that can be found 
-[here](https://www.seas.upenn.edu/~cis194/spring13/), based on recommendation from [
-this](https://github.com/bitemyapp/learnhaskell) github repo. For reference I checked 
-my work against the solutions of one @/bshwb, their repo can be found 
+To learn Haskell I worked through the [Spring 2013 section of CIS 194](https://www.seas.upenn.edu/~cis194/spring13/), based on recommendation from [this](https://github.com/bitemyapp/learnhaskell) 
+github repo. For reference I checked my work against the solutions of one @/bshwb, their repo can be found 
 [here](https://github.com/bschwb/cis194-solutions).
 
 I also used [this](https://www.youtube.com/playlist?list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV) 
