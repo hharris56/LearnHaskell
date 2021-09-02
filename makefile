@@ -1,6 +1,4 @@
-# Hunter Harris 8-23-2021
-# Haskell Day 1
-# Makefile
+# HUNTER HARRIS
 
 make_haskell:
 	ghc -Wall lecture2.hs
