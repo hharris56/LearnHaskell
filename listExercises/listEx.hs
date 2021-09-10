@@ -45,20 +45,44 @@ isAsc (x:xs) = x <= head xs && isAsc xs
 {- Another Option
 isAsc (x:y:xs) = (x <= y) && isAsc (y:xs)
 -- this method shows we can extend the pattern matching to ensure
--- further than just (x:xs) and how this can be useful -}
+-- further than just (x:xs) ... this can be useful -}
 
 
 -- EXERCISE 4 : hasPath
 
+-- Given a list and an element, return the list with the element removed
+removeElem :: (Eq a) => [a] -> a -> [a]
+removeElem [] _ = []
+removeElem (x:xs) e
+  | x == e    = removeElem xs e
+  | otherwise = x : removeElem xs e
+
 -- given a directed graph in the form of a list of Int tuples,
 -- return a boolean of it a path exists from the first to the second node
 hasPath :: [(Int, Int)] -> Int -> Int -> Bool
-hasPath [] _ _ = False
-hasPath ((n1,n2):xs) s t
-  | s == n1 && t == n2  = True
-  | s == n1   = hasPath xs n2 t
-  | otherwise = hasPath xs s t
+hasPath list start target = aux list start target
+  where
+    aux [] s t = s == t
+    aux ((n1, n2):xs) s t
+      | s == n1 && t == n2 = True
+      | s == n1   = hasPath (removeElem list (n1, n2)) n2 t ||
+                    aux xs s t
+      | otherwise = aux xs s t
 
-
-
-
+hasPath2 :: [(Int, Int)] -> Int -> Int -> Bool
+hasPath2 [] s t = s == t
+hasPath2 list start target
+  | start == target = True
+  | otherwise = 
+    let list' = [ (n, m) | (n, m) <- list, n /= start] in
+        or [ hasPath list' m y | (n, m) <- list, n == start]
+{- So admittedly, this second solution is a bit confusing but I think
+-- I understand what is happening. Using list comprehension we generate
+-- 2 new lists. This first one is called list' and this consists of all
+-- remaining nodes that do not match with start (ie: all nodes that have not
+-- been visited yet). The second list is unnamed but it is a list of boolean
+-- values retrieved from calling hasPath on our new list (list') with the
+-- visted nodes destination as the new starting value. We then perform an
+-- 'or' operation on the entire list, and if any of the results are true,
+-- the entire expression will result in true. The logic is mainly the same
+-- as my previous solution, but writen in a more comprehensive manner -}
