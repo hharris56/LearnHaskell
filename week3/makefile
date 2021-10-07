@@ -2,7 +2,7 @@
 # GENERATED MAKEFILE
 
 make_cmd:
-	ghc -Wall lecture3.hs
+	ghc -Wall Golf.hs
 
 clean:
-	if [ -f lecture3 ]; then rm lecture3; fi && rm lecture3.hi lecture3.o
+	@if [ -f Golf ]; then rm Golf; fi && rm Golf.hi Golf.o
