@@ -7,6 +7,7 @@
 module Golf where
 
 -- import Safe.Partial
+import Data.List
 
 -------------------------------------------------------------------------------
 
@@ -69,12 +70,77 @@ localMaxima (_:xs)       = localMaxima xs
 
 -- localMaximaF :: [Integer] -> [Integer]
 -- localMaximaF l = [x | (xl:x:xr:xs) <- l, (x > xl) && (x > xr)]
-
-
 -- [ [e | (e, i) <- zip xs [1..], i `mod` n == 0] | n <- [1..length xs] ]
-
-
-
 
 -------------------------------------------------------------------------------
 
+-- Task #3 - Histogram
+-- Given a list of integers between 0 and 9, output a historgram showing
+-- the number of each occurance.
+--
+-- ex: histogram [1, 1, 1, 5] ==
+--
+--  *
+--  *
+--  * *
+-- ==========
+-- 0123456789
+
+-- count occurances of x in a given list (curried)
+count :: Eq a => a -> [a] -> Int
+count x = length . filter (x==)
+
+-- build a row 10 characters long... n '*'s and fill remaining with ' '
+buildRow :: Int -> String
+buildRow n = (replicate n '*') ++ (replicate (9-n) ' ')
+
+-- rotate matrix left
+rotl :: [[a]] -> [[a]]
+rotl = reverse . transpose
+
+histogram :: [Integer] -> String
+histogram l  = "\n" ++ intercalate "\n" mat ++ "\n==========\n0123456789\n"
+  where
+    mat = filter (\x -> elem '*' x) $ rotl [buildRow $ count i l | i <- [0..9]]
+
+-- Solution 1
+-- 1. Count each occurances starting from 0
+-- 2. Convert to "*" fill remaining with " "
+-- 3a. Rotate matrix left
+-- 3b. Remove empty rows
+-- 3c. Join with "\n"
+-- 3d. Append axis / label string
+
+-- How it works
+-- This will be a breif rundown of the steps listed above. For step 1 and
+-- 2 we use this phrase [buildRow $ count i l | i <- [0..9]] to count each
+-- occurance of the numbers 0 through 9 and build a row of "*". Once we have
+-- our 9 x 9 matrix of "*"s and " ", we rotate it to the left to move the
+-- number from a row label to a column label (see visualization below). After
+-- rotating we remove all empty rows on top using a lambda function to call
+-- filter on each row. The elem function is used here to check if * is in the 
+-- row like so (\x -> elem '*' x). After that we join the remaining rows with 
+-- a newline to make a large string. All that is left now is to add the axis 
+-- label and return the result (also add a newline on top for padding).
+--
+-- Rotate visualization on 4x4 matrix
+-- Before:
+-- 0: ***
+-- 1: *
+-- 2: 
+-- 3: **
+-- After:
+--
+-- *
+-- *  *
+-- ** *
+-- 0123
+ 
+-- Solution 2
+-- 1. create ref list of # 0-9
+-- 2. iterate over input list, remove match from both input n ref list
+-- 3. return string in histogram form
+-- 4. repeat steps 1-3 until list is empty
+-- 5a. reverse string list
+-- 5b. append axis / label string
+-- 6. join into single string
