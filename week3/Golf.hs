@@ -2,9 +2,13 @@
 -- Learn Haskell HW3 Golf
 -- 6 October 2021
 
+
+
 module Golf where
 
+-- import Safe.Partial
 
+-------------------------------------------------------------------------------
 
 -- Task #1 - Hopscotch
 -- For a given list, return a list of lists starting with the
@@ -14,10 +18,7 @@ module Golf where
 -- ex: skips "ABCD" == ["ABCD", "BD", "C", "D"]
 
 skips :: [a] -> [[a]]
-skips [] = []
-skips xs = sol
-  where
-    sol = [ [e | (e, i) <- zip xs [1..], i `mod` n == 0] | n <- [1..length xs] ]
+skips xs = [[e | (e, i) <- zip xs [1..], i `mod` n == 0] | n <- [1..length xs]]
 
 -- How it works
 -- Lets start by breaking down this list comprehension into 2 pieces
@@ -39,3 +40,41 @@ skips xs = sol
 --  For each number n, 1 to *list length*, zip index info into our
 --  input list and filter for only the elements who are at index
 --  multiples of n
+
+-------------------------------------------------------------------------------
+
+-- Task #2 - Local Maxima
+-- For a given Int array, return an array of Ints that were greater
+-- than the values directly before and after it
+--
+-- ex: localMaxima [2, 9, 5, 6, 1,] == [9, 6]
+
+localMaxima :: [Integer] -> [Integer]
+localMaxima []           = []
+localMaxima (xl:x:xr:xs)
+  | (x > xl) && (x > xr) = x : (localMaxima $ x:xr:xs)
+  | otherwise            = localMaxima $ x:xr:xs
+localMaxima (_:xs)       = localMaxima xs
+
+-- How it works
+-- In order to check if a value is a local maxima we must compare it
+-- to its two neighboring values. We use pattern matching to establish
+-- AT LEAST 4 values in a list (left, target, right, rest of list) to
+-- immediately rule out anything with no neighbors. After that we simply
+-- compare if that target value is greater than its two neighboring
+-- values. If so, add it to the list and continue, otherwise simply
+-- move on. The next call should start with the current target value
+
+-- Attempt 2
+
+-- localMaximaF :: [Integer] -> [Integer]
+-- localMaximaF l = [x | (xl:x:xr:xs) <- l, (x > xl) && (x > xr)]
+
+
+-- [ [e | (e, i) <- zip xs [1..], i `mod` n == 0] | n <- [1..length xs] ]
+
+
+
+
+-------------------------------------------------------------------------------
+
