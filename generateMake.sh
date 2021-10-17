@@ -17,7 +17,7 @@ make_cmd:
 \tghc -Wall $1.hs
 
 clean:
-\tif [ -f $1 ]; then rm $1; fi && rm $1.hi $1.o" > makefile
+\t@if [ -f $1 ]; then rm $1; fi && rm $1.hi $1.o" > makefile
 }
 
 # Gaurd against overwritting existing makefile
