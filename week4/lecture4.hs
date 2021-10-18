@@ -74,12 +74,82 @@ myTest' = even . length . greaterThan100
 
 -- Currying and Partial Application -------------------------------------------
 
+-- NEWS FLASH !! ALL FUNCTIONS IN HASKELL TAKE A SINGLE ARGUEMNT
+-- take this for example
+f1 :: Int -> Int -> Int
+f1 x y = 2*x + y
 
+-- f takes one argument, and returns a function of type Int -> Int. Meaning
+-- f can be rewritten like
+f1' :: Int -> (Int -> Int)
+f1' x y = 2*x + y
 
+-- So if a funciton is type W -> X -> Y -> Z it can be viewed as
+-- W -> (X -> (Y -> Z))... we can always add or remove parantheses from the
+-- rightmost 'top-level' arrow in a type. Similarly, function application is
+-- also like this but left associative ie "f 3 2" is shorthand for "(f 3) 2"
+--
+-- In a nutshell multiple arguments are really just syntax sugar for lambda
+-- functions. Take a look at the following
+-- f x y z = ...
+--    is shorthand for
+-- f = \x -> (\y -> (\z -> ...))
+--
+-- \x y z -> ...
+--    is shorhand for
+-- \x -> (\y -> (\z -> ...))
+-- 
+-- This idea of treating multi argument functions as single argument
+-- functions that return other functions is called 'currying'.
+--
+-- If we want a true multi argument function you would have to represent
+-- them as a typle. ex
+f1'' :: (Int, Int) -> Int
+f1'' (x,y) = 2*x + y
 
+-- Though we are passing two values (x and y) we treat the tuple as a 
+-- single argument though so it could still be seen as such.
+--  
+-- curry / uncurry are standard library functions that may be of use. In
+-- particular uncurry can be used to apply functions to a pair like so
+-- uncurry (+) (2,3)
 
+-- Partial Application --------------------------------------------------------
 
+-- The act of applying some of a functions arguments to recieve a function 
+-- of the remaining arguments is called "partial application". Due to Haskell's
+-- curried nature, partial application is really easy... as long as it is to 
+-- the first argument(s). This limitation encourages you to consider the 
+-- ordering of arguments when defining a function to make partial application
+-- easier in the future. Argument that are often the same value should come
+-- first, while ones that have the greatest variation should be last.
+-- Note: Infix operators allow partial application to either of their
+-- arguments using an operator section (see above section)
 
+-- Wholemeal Programming ------------------------------------------------------
 
+-- Lets try using what we've learned to achieve a wholemeal style of 
+-- programming. Consider the following function
 
+foobar :: [Integer] -> Integer
+foobar []     = 0
+foobar (x:xs)
+  | x > 3     = (7*x + 2) + foobar xs
+  | otherwise = foobar xs
+
+-- It works but its not good Haskell style. The problem is that its
+-- 1. doing too much at once
+-- 2. working at too low a level
+--
+-- Rather than think about each individual element, lets look at this
+-- problem as incremental transformations to the whole input.
+
+foobar' :: [Integer] -> Integer
+foobar' = sum . map (\x -> 7*x + 2) . filter (>3)
+
+-- So, what is going on here?
+-- This defines foobar as a "pipeline" of three functions.
+-- First, we filter our list for all elements greater than 3
+-- Next we map our arithmatic expression onto the elements of the list
+-- Finally we sum up the results
 
