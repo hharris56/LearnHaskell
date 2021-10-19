@@ -2,7 +2,7 @@
 # GENERATED MAKEFILE
 
 make_cmd:
-	ghc -Wall lecture4.hs
+	ghc -Wall hw4.hs
 
 clean:
-	@if [ -f lecture4 ]; then rm lecture4; fi && rm lecture4.hi lecture4.o
+	@if [ -f hw4 ]; then rm hw4; fi && rm hw4.hi hw4.o
