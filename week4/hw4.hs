@@ -104,5 +104,22 @@ foldTree = foldr addNode Leaf
 -- will be supplied by the next element of the array and the second argument
 -- will be supplied by the result of the previous iteration (the balanced tree)
 
+-- Exercise 3: More Folds! ----------------------------------------------------
 
+-- Implement xor
+-- returns True if and only iff there are an odd number of True values
+-- contained in the input list. Number of false values does not matter, the 
+-- solution must implement foldr
 
+-- for fun, without foldr
+xor' :: [Bool] -> Bool
+xor' = even . length . filter (==True)
+
+-- using foldr
+xor :: [Bool] -> Bool
+xor = even . foldr (\_ n -> 1 + n) (0 :: Integer) . filter (==True)
+
+-- Note: we have to include the (0 :: Integer) here to tell the compiler
+-- we expect and Integer type from our foldr call, otherwise we will get a
+-- warning that calling 'even' constrains the type to an integral (which we
+-- already know to be true)
