@@ -106,7 +106,7 @@ foldTree = foldr addNode Leaf
 
 -- Exercise 3: More Folds! ----------------------------------------------------
 
--- Implement xor
+-- 1. Implement xor
 -- returns True if and only iff there are an odd number of True values
 -- contained in the input list. Number of false values does not matter, the 
 -- solution must implement foldr
@@ -117,9 +117,65 @@ xor' = even . length . filter (==True)
 
 -- using foldr
 xor :: [Bool] -> Bool
-xor = even . foldr (\_ n -> 1 + n) (0 :: Integer) . filter (==True)
+xor = even . foldr (\True n -> 1 + n) (0 :: Integer)
 
 -- Note: we have to include the (0 :: Integer) here to tell the compiler
 -- we expect and Integer type from our foldr call, otherwise we will get a
 -- warning that calling 'even' constrains the type to an integral (which we
 -- already know to be true)
+
+-- 2. Implement map
+-- has the same behavior as map fucntion, but implemented using foldr
+map' :: (a -> b) -> [a] -> [b]
+map' f = foldr (\x xs -> (f x) : xs) []
+
+{- 3. Implement foldl (Optional)
+foldl' :: (a -> b -> a) -> a -> [b] -> a
+foldl' f base = reverse . (foldr f base) . reverse
+-}
+
+-- Exercise 4: Finding Primes -------------------------------------------------
+
+-- For a given number n, generate all odd prime numbers up to 2n + 2 using
+-- the sieveSundaram formula. You may also use the definition for a cartesian
+-- product below
+-- 
+-- Algorith:
+-- find and mark all numbers with following form
+-- i + j + 2ij <= n
+-- where
+-- i, j are Natural Numbers
+--     and
+-- 1 <= i <= j
+-- For any remaining numbers apply 2n + 1
+-- That will be the list of odd primes
+
+-- steps:
+-- 1. generate list [1..n]
+-- 2. generate list of marked numbers (held as cartesian products of i, j)
+-- 3. filter list from step 1 based on numbers not in list from step 2
+-- 4. map 2n + 1 to the filtered list
+
+cartProd :: [a] -> [b] -> [(a, b)]
+cartProd xs ys = [(x, y) | x <- xs, y <- ys]
+
+generateCombos :: Integer -> Integer -> Integer -> [(Integer, Integer)]
+generateCombos n i j = [takeWhile (mValue (i, j) <= n) 
+
+--for a given number n, does it exist in the set of all marked values
+notMarked :: Integer -> [(Integer, Integer)] -> Bool
+notMarked n xs = not $ foldr (\ij res-> res && n == mValue ij) True xs
+
+-- for a given combination of i and j, do they qualify as a matched number 
+isMarked :: Integer -> (Integer, Integer) -> Bool
+isMarked n (i, j) = (i + j + (2*i*j)) < n
+
+mValue :: (Integer, Integer) -> Integer
+mValue (i, j) = i + j + (2*i*j)
+
+
+{-
+sieveSundaram :: Integer -> [Integer]
+sieveSundaram n =  
+
+-}
