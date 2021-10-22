@@ -150,32 +150,45 @@ foldl' f base = reverse . (foldr f base) . reverse
 -- For any remaining numbers apply 2n + 1
 -- That will be the list of odd primes
 
--- steps:
--- 1. generate list [1..n]
--- 2. generate list of marked numbers (held as cartesian products of i, j)
--- 3. filter list from step 1 based on numbers not in list from step 2
--- 4. map 2n + 1 to the filtered list
-
+-- compute the cartesian product (get every possible combination)
 cartProd :: [a] -> [b] -> [(a, b)]
 cartProd xs ys = [(x, y) | x <- xs, y <- ys]
 
-generateCombos :: Integer -> Integer -> Integer -> [(Integer, Integer)]
-generateCombos n i j = [takeWhile (mValue (i, j) <= n) 
-
---for a given number n, does it exist in the set of all marked values
-notMarked :: Integer -> [(Integer, Integer)] -> Bool
-notMarked n xs = not $ foldr (\ij res-> res && n == mValue ij) True xs
-
--- for a given combination of i and j, do they qualify as a matched number 
-isMarked :: Integer -> (Integer, Integer) -> Bool
-isMarked n (i, j) = (i + j + (2*i*j)) < n
-
+-- formula for converting to a marked value
 mValue :: (Integer, Integer) -> Integer
-mValue (i, j) = i + j + (2*i*j)
+mValue (i, j)= i + j + (2*i*j)
 
+-- formula for converting to a prime number
+pValue :: Integer -> Integer
+pValue n = 2*n + 1
 
-{-
+-- for a given combination of i and j, do they qualify as a marked number 
+isMarked :: Integer -> (Integer, Integer) -> Bool
+isMarked n (i, j) = (i + j + (2*i*j)) <= n
+
+-- generate all combos for the sieve
+generateCombos :: Integer -> [(Integer, Integer)]
+generateCombos n = filter (\(i,j) -> j >= i) .
+                   filter (isMarked n) $ cartProd [1..n] [1..n]
+
+-- generate list of marked values up to n
+markedValues :: Integer -> [Integer]
+markedValues = map mValue . generateCombos 
+
+-- generate all odd prime numbers up to 2n + 2
 sieveSundaram :: Integer -> [Integer]
-sieveSundaram n =  
+sieveSundaram n = map pValue $ filter (`notElem` markedValues n) [1..n]
 
--}
+-- How it works
+-- To solve the problem we developed a series of steps, then created a
+-- pipeline to execute the steps in succession. The steps are as follows
+-- 1. generate solution list
+--            -> [1..n] <-
+-- 2. generate list of marked numbers 1..n
+--            markedValues
+-- 3. filter marked values out of the solution list
+--            filter (`notElem markedValues n) [1..n]
+-- 4. map 2n + 1 onto the solution list
+--            map pValue $ ...
+
+
