@@ -2,7 +2,7 @@
 # GENERATED MAKEFILE
 
 make_cmd:
-	ghc -Wall lecture5.hs
+	ghc -Wall Calc.hs
 
 clean:
-	@if [ -f lecture5 ]; then rm lecture5; fi && rm lecture5.hi lecture5.o
+	@if [ -f Calc ]; then rm Calc; fi && rm Calc.hi Calc.o
