@@ -27,11 +27,53 @@ evalStr expression =
 -- Exercise 3: Expr -----------------------------------------------------------
 
 class Expr a where
-  lit :: a -> a
+  lit :: Integer -> a
   add :: a -> a -> a
   mul :: a -> a -> a
 
 instance Expr ExprT where
-  lit (Lit n) = Lit n
-  add (Add l r) = (Add l r)
-  mul (Mul l r) = (Mul l r)
+  lit n = Lit n
+  add l r = (Add l r)
+  mul l r = (Mul l r)
+
+-- used to constrain a Expr to a ExprT
+reify :: ExprT -> ExprT
+reify = id
+
+-- Exercise 4: Custom Calculators ---------------------------------------------
+
+-- Integer:
+-- Works like the original calculator
+instance Expr Integer where
+  lit n = n
+  add l r = l + r
+  mul l r = l * r
+
+-- Bool:
+-- False is <= 0, True is > 0
+-- Add is OR, mul is AND
+instance Expr Bool where
+  lit n = n > 0
+  add l r = l || r
+  mul l r = l && r
+
+-- MinMax:
+-- Add is MAX, mul is MIN
+newtype MinMax = MinMax Integer deriving (Eq, Ord, Show)
+instance Expr MinMax where
+  lit n = MinMax n
+  add l r = max l r
+  mul l r = min l r
+
+-- Mod7:
+-- All values should be in range 0..7
+newtype Mod7 = Mod7 Integer deriving (Eq, Show)
+
+instance Num Mod7 where
+  (+) (Mod7 l) (Mod7 r) = Mod7 ((l + r) `mod` 7)
+  (*) (Mod7 l) (Mod7 r) = Mod7 ((l * r) `mod` 7)
+
+instance Expr Mod7 where
+  lit n = Mod7 (n `mod` 7)
+  add l r = l + r
+  mul l r = l + r
