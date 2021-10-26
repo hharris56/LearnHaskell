@@ -6,3 +6,6 @@ make_cmd:
 
 clean:
 	@if [ -f Calc ]; then rm Calc; fi && rm Calc.hi Calc.o
+
+cleanAll:
+	@rm *.hi *.o
